@@ -90,26 +90,12 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
 .cover-title{font-family:'Playfair Display',serif;font-size:32px;color:#fff;font-style:italic;line-height:1.2;text-align:center;text-shadow:0 2px 12px rgba(160,50,90,.38);margin-bottom:4px}
 .cover-sub{font-size:11px;color:rgba(255,255,255,.72);letter-spacing:2px;text-align:center;margin-bottom:16px}
 .cover-div{width:70px;height:1px;background:rgba(255,255,255,.48);margin:0 auto 14px}
-.cover-desc{font-family:'Playfair Display',serif;font-size:13.5px;color:rgba(255,255,255,.9);text-align:center;font-style:italic;line-height:1.75;margin-bottom:20px;padding:0 4px}
+.cover-desc{font-family:'Playfair Display',serif;font-size:13.5px;color:rgba(255,255,255,.9);text-align:center;font-style:italic;line-height:1.75;margin-bottom:12px;padding:0 4px}
 .cover-tabs{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px}
 .ctab{width:8px;border-radius:3px 0 0 3px;background:rgba(255,255,255,.38)}
 .ctab:nth-child(1){height:24px}.ctab:nth-child(2){height:18px;background:rgba(255,255,255,.24)}.ctab:nth-child(3){height:13px;background:rgba(255,255,255,.14)}
-.btn-open{
-  background:linear-gradient(135deg,rgba(255,255,255,.32),rgba(255,255,255,.14));
-  border:1.5px solid rgba(255,255,255,.72);color:#fff;padding:13px 32px;border-radius:99px;
-  font-family:'Lato',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;cursor:pointer;
-  text-transform:uppercase;backdrop-filter:blur(8px);transition:all .35s;margin-top:auto;
-  box-shadow:0 4px 20px rgba(255,255,255,.15),inset 0 1px 0 rgba(255,255,255,.4);
-  position:relative;z-index:2;overflow:hidden;
-}
-.btn-open::before{
-  content:'';position:absolute;top:0;left:-120%;width:80%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-  transform:skewX(-18deg);transition:left .55s;
-}
-.btn-open:hover{background:rgba(255,255,255,.42);transform:translateY(-3px);box-shadow:0 8px 28px rgba(255,255,255,.22)}
-.btn-open:hover::before{left:140%}
-.btn-open:disabled{opacity:.6;cursor:wait;transform:none}
+.cover-wrap.dragging{transition:none!important}
+.cover-wrap.dragging .cover-book{transition:none}
 
 /* ===== BOOK OPEN OVERLAY ===== */
 #book-flash{
@@ -152,20 +138,36 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
 .pi-name{font-family:'Playfair Display',serif;font-size:22px;color:#c0457a;font-style:italic;text-align:center;margin-bottom:4px}
 .pi-tagline{font-size:12px;color:#d47a9e;text-align:center;margin-bottom:16px;letter-spacing:.5px}
 .pi-div{width:54px;height:1px;background:linear-gradient(90deg,transparent,#ff69b4,transparent);margin:0 auto 15px}
-.pi-msg{background:rgba(255,255,255,.72);border:1px solid rgba(255,105,180,.18);border-radius:12px;padding:16px;font-family:'Playfair Display',serif;font-size:14px;color:#7a2248;font-style:italic;line-height:1.75;text-align:center;margin-bottom:18px;width:100%}
-.btn-pi{width:100%;padding:13px;background:linear-gradient(135deg,#ff69b4,#e84c90);color:#fff;border:none;border-radius:12px;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 14px rgba(232,76,144,.38);transition:transform .2s,box-shadow .2s}
-.btn-pi:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(232,76,144,.44)}
+.pi-msg{background:rgba(255,255,255,.72);border:1px solid rgba(255,105,180,.18);border-radius:12px;padding:16px;font-family:'Playfair Display',serif;font-size:14px;color:#7a2248;font-style:italic;line-height:1.75;text-align:center;margin-bottom:8px;width:100%}
+
+/* ===== SWIPE HINT ===== */
+.swipe-hint{
+  text-align:center;font-size:11px;color:#d47a9e;letter-spacing:1.2px;
+  padding:14px 8px 6px;position:relative;z-index:2;flex-shrink:0;
+  animation:swipePulse 2.4s ease-in-out infinite;
+}
+.swipe-hint.light{color:rgba(255,255,255,.82)}
+.swipe-hint .arr{display:inline-block;margin-right:4px;animation:arrowSlide 1.4s ease-in-out infinite}
+.swipe-dots{display:flex;justify-content:center;gap:5px;padding:8px 0 4px}
+.swipe-dots i{width:5px;height:5px;border-radius:50%;background:rgba(255,105,180,.25);transition:all .35s}
+.swipe-dots i.on{width:16px;border-radius:99px;background:linear-gradient(90deg,#ff69b4,#ff9cc2)}
 
 /* ===== QUIZ ===== */
-#s-quiz{justify-content:flex-start;padding-top:16px;padding-bottom:24px}
+#s-quiz{justify-content:flex-start;padding-top:16px;padding-bottom:24px;touch-action:pan-y}
 .quiz-inner{width:100%;max-width:440px;margin:auto;padding:4px 0}
 .qbook{
   background:linear-gradient(180deg,#fffafc 0%,#fff5f9 100%);
   border-radius:4px 18px 18px 4px;
   box-shadow:-10px 0 0 #d4568a,-17px 0 0 #c0457a,-22px 0 0 #8a2455,0 20px 50px rgba(212,86,126,.28);
-  padding:26px 22px 22px;position:relative;overflow:hidden;
+  padding:26px 22px 16px;position:relative;overflow:hidden;
   border:1px solid rgba(255,182,208,.25);
+  transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .4s;
+  transform-origin:center center;
+  will-change:transform,opacity;
 }
+.qbook.swipe-out{transform:translateX(-108%) rotateY(14deg);opacity:0}
+.qbook.swipe-in{animation:slideIn .55s cubic-bezier(.22,1,.36,1) both}
+.qbook.shake-card{animation:shake .45s cubic-bezier(.36,.07,.19,.97)}
 .q-photo-area{
   display:flex;justify-content:center;margin-bottom:16px;position:relative;z-index:1;
   animation:fiu .55s ease both;
@@ -211,11 +213,8 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
 .ans-ta{width:100%;padding:13px 15px;border:1.5px solid rgba(255,105,180,.27);border-radius:12px;background:rgba(255,255,255,.86);font-family:'Lato',sans-serif;font-size:14px;color:#5a1a32;outline:none;margin-bottom:11px;display:block;resize:none;min-height:72px;transition:border-color .3s,box-shadow .3s;position:relative;z-index:1}
 .ans-ta:focus{border-color:#ff69b4;box-shadow:0 0 0 3px rgba(255,105,180,.14)}
 .ans-ta::placeholder{color:#d4a0b5}
-.hint{font-size:10.5px;color:#d4a0b5;text-align:center;font-style:italic;margin-bottom:11px;position:relative;z-index:1}
-.btn-q{width:100%;padding:13px;background:linear-gradient(135deg,#ff69b4,#e84c90);color:#fff;border:none;border-radius:12px;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 14px rgba(232,76,144,.37);transition:transform .2s,box-shadow .2s;position:relative;z-index:1}
-.btn-q:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(232,76,144,.42)}
-.btn-q:active{transform:scale(.98)}
-.wrong{display:none;color:#e84c90;font-size:11.5px;text-align:center;margin-top:8px;font-style:italic;position:relative;z-index:1}
+.hint{font-size:10.5px;color:#d4a0b5;text-align:center;font-style:italic;margin-bottom:8px;position:relative;z-index:1}
+.wrong{display:none;color:#e84c90;font-size:11.5px;text-align:center;margin-top:4px;font-style:italic;position:relative;z-index:1}
 .hdeco{position:absolute;font-size:11px;opacity:.12;animation:sparkle 3s ease-in-out infinite;pointer-events:none}
 
 /* ===== END ===== */
@@ -232,21 +231,9 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
 .aitem:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
 .aq{font-size:9px;color:#ff69b4;font-weight:700;letter-spacing:.5px;margin-bottom:3px;text-transform:uppercase}
 .aa{font-family:'Playfair Display',serif;font-size:13px;color:#7a2248;font-style:italic;line-height:1.55}
-.btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:12px;font-family:'Lato',sans-serif;font-size:15px;font-weight:700;letter-spacing:.5px;cursor:pointer;box-shadow:0 4px 16px rgba(37,211,102,.42);transition:transform .2s,box-shadow .2s;text-decoration:none}
-.btn-wa:hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(37,211,102,.47)}
-.btn-wa svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
-
-/* ===== MUSIC BTN ===== */
-#music-btn{
-  position:fixed;bottom:20px;right:20px;z-index:50;
-  width:42px;height:42px;border-radius:50%;
-  background:rgba(255,105,180,.85);border:none;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;box-shadow:0 4px 14px rgba(232,76,144,.4);
-  transition:transform .2s,background .2s;font-size:18px;
-  backdrop-filter:blur(4px);
-}
-#music-btn:hover{transform:scale(1.12);background:rgba(232,76,144,.92)}
+.btn-wa,.wa-link{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 8px;color:#128C7E;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;letter-spacing:.3px;cursor:pointer;text-decoration:none;background:none;border:none;transition:opacity .2s}
+.wa-link:hover{opacity:.75}
+.wa-link svg{width:20px;height:20px;fill:#25D366;flex-shrink:0}
 
 /* ===== KEYFRAMES ===== */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -271,6 +258,12 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
   20%{opacity:1}
   100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(1.2) rotate(180deg)}
 }
+@keyframes swipePulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes arrowSlide{0%,100%{transform:translateX(0)}50%{transform:translateX(10px)}}
+@keyframes slideIn{
+  from{opacity:0;transform:translateX(70px) rotateY(-10deg);filter:blur(2px)}
+  to{opacity:1;transform:none;filter:none}
+}
 .shake{animation:shake .4s cubic-bezier(.36,.07,.19,.97)}
 </style>
 </head>
@@ -279,8 +272,6 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
 <canvas id="sakura"></canvas>
 <div id="book-flash"></div>
 <audio id="bgm" loop preload="auto" autoplay playsinline src="lagu.mp3"></audio>
-
-<button id="music-btn" onclick="toggleMusic()" title="Play/Pause musik">🎵</button>
 
 <div class="screen" id="s-load">
   <div class="load-ring-wrap">
@@ -293,7 +284,7 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
 </div>
 
 <div class="screen off" id="s-cover">
-  <div class="cover-wrap">
+  <div class="cover-wrap" id="cover-wrap">
     <div class="cover-book">
       <div class="cover-top-line"></div>
       <span class="cover-cd" style="top:14px;left:14px;animation-delay:0s">✦</span>
@@ -314,9 +305,9 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
       <div class="cover-div"></div>
       <div class="cover-desc">Allo adek yang selalu bikin hari-hari abang berbeda. Ada hal yang pengen abang tanyain buat makin lebih kenal ... 🌸</div>
       <div class="cover-tabs"><div class="ctab"></div><div class="ctab"></div><div class="ctab"></div></div>
-      <button class="btn-open" id="btn-open" onclick="openBook()">Buka Bukunya...→</button>
     </div>
   </div>
+  <div class="swipe-hint light"><span class="arr">👉</span> geser ke kiri untuk buka buku</div>
 </div>
 
 <div class="screen off" id="s-photo">
@@ -334,14 +325,14 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
       <div class="pi-tagline" id="pi-tagline">yang selalu bikin abang senyum tanpa alasan</div>
       <div class="pi-div"></div>
       <div class="pi-msg">Sebelum Abang mulai, Abang hanya mau bilang... makasih ya udah ada. Meskipun kita belum pernah ketemu, tapi adek udah bikin hari-hari abang menjadi lebih berwarna 🌸</div>
-      <button class="btn-pi" onclick="go('s-quiz',true);renderQ()">Mulai Menjawab →</button>
     </div>
   </div>
+  <div class="swipe-hint"><span class="arr">👉</span> geser ke kiri untuk mulai</div>
 </div>
 
 <div class="screen off" id="s-quiz">
   <div class="quiz-inner">
-    <div class="qbook">
+    <div class="qbook" id="qbook">
       <div class="q-top"></div>
       <div class="q-spine"></div>
       <div class="q-lines"></div>
@@ -366,9 +357,10 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
       </div>
       <div id="inarea"></div>
       <div class="hint" id="qhint"></div>
-      <button class="btn-q" id="btnq" onclick="nextQ()">Lanjut →</button>
       <div class="wrong" id="wrong">Isi dulu ya~ 🌸</div>
     </div>
+    <div class="swipe-dots" id="q-dots"></div>
+    <div class="swipe-hint" id="quiz-hint"><span class="arr">👉</span> geser ke kiri setelah jawab</div>
   </div>
 </div>
 
@@ -383,10 +375,11 @@ canvas#sakura{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:
         <div class="end-ans-title">📖 Jawaban kamu</div>
         <div id="alist"></div>
       </div>
-      <a class="btn-wa" id="btn-wa" href="#" onclick="kirimWA(event)">
+      <a class="wa-link" id="btn-wa" href="#" onclick="kirimWA(event)">
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.537 4.07 1.482 5.796L0 24l6.37-1.467A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.372l-.36-.214-3.714.856.882-3.614-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
-        Kirim Jawaban ke WhatsApp
+        Tap untuk kirim jawaban ke WhatsApp
       </a>
+      <div class="swipe-hint"><span class="arr">👆</span> atau tap link di atas</div>
     </div>
   </div>
 </div>
@@ -427,8 +420,9 @@ const questions = [
 let idx=0, ans=[];
 let userPhotoUrl=null;
 let musicPlaying=false;
+let bookOpening=false;
+let slideBusy=false;
 const bgm=document.getElementById('bgm');
-const musicBtn=document.getElementById('music-btn');
 
 // ---- SAKURA ----
 (()=>{
@@ -451,21 +445,18 @@ const musicBtn=document.getElementById('music-btn');
 
 // ---- MUSIC ----
 let musicRetry=null;
-function setMusicBtn(on){
-  musicBtn.textContent=on?'🎵':'🔇';
-}
 function startMusic(){
   if(musicPlaying)return;
   bgm.muted=false;
   bgm.play().then(()=>{
-    musicPlaying=true;setMusicBtn(true);
+    musicPlaying=true;
     if(musicRetry){clearInterval(musicRetry);musicRetry=null;}
   }).catch(()=>{
     bgm.muted=true;
     bgm.play().then(()=>{
       bgm.muted=false;
-      if(!bgm.paused){musicPlaying=true;setMusicBtn(true);if(musicRetry){clearInterval(musicRetry);musicRetry=null;}}
-    }).catch(()=>{bgm.muted=false;musicPlaying=false;setMusicBtn(false);});
+      if(!bgm.paused){musicPlaying=true;if(musicRetry){clearInterval(musicRetry);musicRetry=null;}}
+    }).catch(()=>{bgm.muted=false;musicPlaying=false;});
   });
 }
 function bootMusic(){
@@ -473,10 +464,6 @@ function bootMusic(){
   if(musicRetry)return;
   musicRetry=setInterval(()=>{if(musicPlaying){clearInterval(musicRetry);musicRetry=null;}else startMusic();},500);
   setTimeout(()=>{if(musicRetry){clearInterval(musicRetry);musicRetry=null;}},15000);
-}
-function toggleMusic(){
-  if(musicPlaying){bgm.pause();musicPlaying=false;setMusicBtn(false);}
-  else startMusic();
 }
 function unlockMusic(){bgm.muted=false;if(!musicPlaying)startMusic();}
 bgm.addEventListener('loadeddata',startMusic);
@@ -493,6 +480,8 @@ window.addEventListener('load',()=>{
   document.getElementById('pi-tagline').textContent=TAGLINE_DIA;
   if(FOTO_DIA)setDefaultPhoto(FOTO_DIA);
   bootMusic();
+  initSwipes();
+  buildDots();
 
   const bar=document.getElementById('lbar');
   let pct=0;
@@ -514,11 +503,10 @@ function go(id,enter){
 }
 
 function openBook(){
-  const btn=document.getElementById('btn-open');
-  const wrap=document.querySelector('.cover-wrap');
+  const wrap=document.getElementById('cover-wrap');
   const flash=document.getElementById('book-flash');
-  if(btn.disabled)return;
-  btn.disabled=true;
+  if(bookOpening)return;
+  bookOpening=true;
   wrap.classList.add('opening');
   spawnSparks();
   setTimeout(()=>flash.classList.add('on'),500);
@@ -526,8 +514,91 @@ function openBook(){
     go('s-photo',true);
     flash.classList.remove('on');
     wrap.classList.remove('opening');
-    btn.disabled=false;
+    bookOpening=false;
   },1350);
+}
+
+function startQuiz(){
+  if(bookOpening||!document.getElementById('s-quiz').classList.contains('off'))return;
+  idx=0;ans=[];
+  go('s-quiz',true);
+  renderQ();
+  const book=document.getElementById('qbook');
+  book.classList.add('swipe-in');
+  setTimeout(()=>book.classList.remove('swipe-in'),560);
+}
+
+// ---- SWIPE ----
+function bindSwipe(el,onLeft,onRight){
+  if(!el)return;
+  let sx=0,sy=0,dragging=false,active=false;
+  const TH=55;
+
+  const start=(x,y,target)=>{
+    if(target.closest('input,textarea,a,label,.photo-ring'))return;
+    sx=x;sy=y;dragging=true;active=true;
+    document.getElementById('cover-wrap')?.classList.add('dragging');
+  };
+  const end=(x,y)=>{
+    if(!active)return;
+    active=false;
+    const dx=x-sx,dy=y-sy;
+    dragging=false;
+    const wrap=document.getElementById('cover-wrap');
+    if(wrap){wrap.style.transform='';wrap.classList.remove('dragging');}
+    if(Math.abs(dx)<TH||Math.abs(dx)<Math.abs(dy))return;
+    if(dx<0)onLeft&&onLeft();
+    else onRight&&onRight();
+  };
+  const move=(x,y)=>{
+    if(!dragging)return;
+    const wrap=document.getElementById('cover-wrap');
+    if(!wrap)return;
+    const dx=x-sx;
+    if(dx>=0)return;
+    wrap.style.transform=`translateX(${Math.max(dx*.35,-80)}px) rotateY(${Math.min(-dx*.04,8)}deg)`;
+  };
+
+  el.addEventListener('touchstart',e=>start(e.touches[0].clientX,e.touches[0].clientY,e.target),{passive:true});
+  el.addEventListener('touchmove',e=>move(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+  el.addEventListener('touchend',e=>end(e.changedTouches[0].clientX,e.changedTouches[0].clientY),{passive:true});
+
+  el.addEventListener('mousedown',e=>{if(e.button!==0)return;start(e.clientX,e.clientY,e.target);e.preventDefault();});
+  el.addEventListener('mousemove',e=>{if(!dragging)return;move(e.clientX,e.clientY);});
+  el.addEventListener('mouseup',e=>{if(!dragging)return;end(e.clientX,e.clientY);});
+  el.addEventListener('mouseleave',e=>{if(!dragging)return;end(e.clientX,e.clientY);});
+}
+
+function initSwipes(){
+  bindSwipe(document.getElementById('s-cover'),openBook);
+  bindSwipe(document.getElementById('s-photo'),startQuiz);
+  bindSwipe(document.getElementById('s-quiz'),nextQ);
+}
+
+function buildDots(){
+  const box=document.getElementById('q-dots');
+  if(!box)return;
+  box.innerHTML=questions.map((_,i)=>`<i data-i="${i}"></i>`).join('');
+  updateDots();
+}
+
+function updateDots(){
+  document.querySelectorAll('#q-dots i').forEach((d,i)=>d.classList.toggle('on',i===idx));
+}
+
+function animateSlide(cb){
+  if(slideBusy)return false;
+  slideBusy=true;
+  const book=document.getElementById('qbook');
+  book.classList.remove('swipe-in','shake-card');
+  book.classList.add('swipe-out');
+  setTimeout(()=>{
+    book.classList.remove('swipe-out');
+    cb();
+    book.classList.add('swipe-in');
+    setTimeout(()=>{book.classList.remove('swipe-in');slideBusy=false;},560);
+  },430);
+  return true;
 }
 
 function spawnSparks(){
@@ -596,39 +667,46 @@ function updateQuizPhoto(q){
 function renderQ(){
   const q=questions[idx];
   updateQuizPhoto(q);
+  updateDots();
   document.getElementById('qtxt').textContent=q.q;
   document.getElementById('qhint').textContent=q.hint||'';
   document.getElementById('qnum').textContent=`${idx+1} / ${questions.length}`;
   document.getElementById('qpfill').style.width=((idx/questions.length)*100)+'%';
   document.getElementById('wrong').style.display='none';
+  document.getElementById('quiz-hint').innerHTML=idx<questions.length-1
+    ?'<span class="arr">👉</span> geser ke kiri setelah jawab'
+    :'<span class="arr">👉</span> geser ke kiri — pertanyaan terakhir';
   const a=document.getElementById('inarea');
   if(q.type==='ta'){
     a.innerHTML=`<textarea class="ans-ta" id="ansel" placeholder="Tulis jawabanmu..." rows="3"></textarea>`;
-    a.querySelector('#ansel').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();nextQ()}});
   }else{
     a.innerHTML=`<input class="ans-input" id="ansel" type="text" placeholder="Tulis jawabanmu..." autocomplete="off">`;
-    a.querySelector('#ansel').addEventListener('keydown',e=>{if(e.key==='Enter')nextQ()});
   }
   const qb=document.getElementById('qbox');qb.style.animation='none';qb.offsetHeight;qb.style.animation='fiu .5s ease both';
-  setTimeout(()=>{const el=document.getElementById('ansel');if(el)el.focus()},80);
+  setTimeout(()=>{const el=document.getElementById('ansel');if(el)el.focus()},120);
 }
 
 function nextQ(){
+  if(slideBusy||bookOpening)return;
   const el=document.getElementById('ansel');
   const v=el?el.value.trim():'';
   if(!v){
-    const b=document.getElementById('btnq');b.classList.remove('shake');b.offsetHeight;b.classList.add('shake');
+    const book=document.getElementById('qbook');
+    book.classList.remove('shake-card');book.offsetHeight;book.classList.add('shake-card');
     document.getElementById('wrong').style.display='block';return;
   }
   ans.push({q:questions[idx].q,a:v});
   idx++;
-  if(idx<questions.length)renderQ();
-  else showEnd();
+  if(idx<questions.length){
+    animateSlide(renderQ);
+  }else{
+    animateSlide(showEnd);
+  }
 }
 
 // ---- END ----
 function showEnd(){
-  go('s-end');
+  go('s-end',true);
   const list=document.getElementById('alist');
   list.innerHTML=ans.map((it,i)=>
     `<div class="aitem">
